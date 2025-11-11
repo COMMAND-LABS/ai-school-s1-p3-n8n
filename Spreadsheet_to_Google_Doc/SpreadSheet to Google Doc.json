@@ -1,0 +1,137 @@
+{
+  "name": "SpreadSheet to Google Doc",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        -64
+      ],
+      "id": "1c45dfab-c620-4644-85e4-9c64fd5ec8dd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Woxyhs6kC5Xh6zSBVy-XH7SjSZScDv5QIK5LZ1_-B-8",
+          "mode": "list",
+          "cachedResultName": "ai_school_kb",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Woxyhs6kC5Xh6zSBVy-XH7SjSZScDv5QIK5LZ1_-B-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Woxyhs6kC5Xh6zSBVy-XH7SjSZScDv5QIK5LZ1_-B-8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -592,
+        -64
+      ],
+      "id": "cf731ec7-a142-4d9d-be18-32e873023e23",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wgSPjML6zFmXOAXP",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nlet markdownString = \"\";\n\nitems.forEach((item, index) => {\n  markdownString += `# Q&A ${index + 1}\\n\\nQ: ${item?.json?.q}\\n\\nA: ${item?.json?.a}\\n\\n\\n`;\n});\n\nreturn { markdownString };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        -64
+      ],
+      "id": "e11674e3-83ea-48f0-ac5d-22d2fca1662b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "1uhPk2A2zv7BU270o1BArNit28371ZtIgNKmOAjqjlaU",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.markdownString }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -64
+      ],
+      "id": "8505e8bd-40e1-4fed-9d86-d6c914f25900",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "cuNy56HMglhsr44W",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "87803991-7441-4ea0-b35f-e9a1b19cdf05",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "59163ef64e1cf4dcd8e0818ffdc09c87dbd57c11199a791813b2ff3820cc01aa"
+  },
+  "id": "1ZAcaQ1E9Ao7V79S",
+  "tags": []
+}
