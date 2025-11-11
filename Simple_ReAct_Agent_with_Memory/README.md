@@ -4,7 +4,7 @@ Here is an n8n workflow inspired by the Day 2 presentation of AI School S1 Phase
 
 ## 3rd-party Integrations
 
-- Serper.dev (https://serper.dev/)
+- Supabase/Postgres (https://supabase.com/)
 - Anthropic Console (https://console.anthropic.com/dashboard)
 
 ## For reference
